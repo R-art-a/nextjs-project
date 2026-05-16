@@ -3,14 +3,14 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 
 const menuItems = [
   // 1. 主菜ジャンル
-  { id: 1, name: "特製ハンバーグ定食", price: 1200, category: "主菜", img: "https://images.unsplash.com/photo-1544025162-d76694265947?w=300&auto=format&fit=crop&q=60" },
-  { id: 2, name: "サクサク唐揚げ丼", price: 950, category: "主菜", img: "https://images.unsplash.com/photo-1516685018646-549198525c1b?w=300&auto=format&fit=crop&q=60" },
-  { id: 3, name: "濃厚こだわりカレー", price: 880, category: "主菜", img: "https://images.unsplash.com/photo-1631515243349-e0cb75fb8d3a?w=300&auto=format&fit=crop&q=60" },
+  { id: 1, name: "特製ハンバーグ定食", price: 1200, category: "フード", img: "https://images.unsplash.com/photo-1544025162-d76694265947?w=300&auto=format&fit=crop&q=60" },
+  { id: 2, name: "唐揚げ丼", price: 950, category: "フード", img: "/karaage.png" },
+  { id: 3, name: "濃厚こだわりカレー", price: 880, category: "フード", img: "https://images.unsplash.com/photo-1631515243349-e0cb75fb8d3a?w=300&auto=format&fit=crop&q=60" },
   
   // 2. 飲み物ジャンル
-  { id: 4, name: "アイスコーヒー", price: 450, category: "飲み物", img: "https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=300&auto=format&fit=crop&q=60" },
-  { id: 5, name: "極上アイスカフェラテ", price: 550, category: "飲み物", img: "https://images.unsplash.com/photo-1517701604599-bb29b565090c?w=300&auto=format&fit=crop&q=60" },
-  { id: 6, name: "すっきりレモンスカッシュ", price: 480, category: "飲み物", img: "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=300&auto=format&fit=crop&q=60" },
+  { id: 4, name: "アイスコーヒー", price: 450, category: "ドリンク", img: "https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=300&auto=format&fit=crop&q=60" },
+  { id: 5, name: "アイスカフェラテ", price: 550, category: "ドリンク", img: "https://images.unsplash.com/photo-1517701604599-bb29b565090c?w=300&auto=format&fit=crop&q=60" },
+  { id: 6, name: "レモンスカッシュ", price: 480, category: "ドリンク", img: "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=300&auto=format&fit=crop&q=60" },
   
   // 3. デザートジャンル
   { id: 7, name: "自家製カスタードプリン", price: 500, category: "デザート", img: "https://images.unsplash.com/photo-1528975604071-b4dc52a2d18c?w=300&auto=format&fit=crop&q=60" },
@@ -18,7 +18,7 @@ const menuItems = [
   { id: 9, name: "季節のフルーツパフェ", price: 750, category: "デザート", img: "https://images.unsplash.com/photo-1488477181946-6428a0291777?w=300&auto=format&fit=crop&q=60" },
 ]
 
-const categories = ["主菜", "飲み物", "デザート"]
+const categories = ["フード", "ドリンク", "デザート"]
 
 export default function Home() {
   return (
@@ -33,8 +33,8 @@ export default function Home() {
           {/* 横並びのナビゲーションメニュー（スマホでもタップしやすいように少し隙間を空けています） */}
           <nav className="flex justify-center gap-4 text-sm font-medium text-zinc-600">
             <a href="#" className="hover:text-zinc-900 transition-colors">ホーム</a>
-            <a href="#主菜" className="hover:text-zinc-900 transition-colors">主菜</a>
-            <a href="#飲み物" className="hover:text-zinc-900 transition-colors">飲み物</a>
+            <a href="#フード" className="hover:text-zinc-900 transition-colors">フード</a>
+            <a href="#ドリンク" className="hover:text-zinc-900 transition-colors">ドリンク</a>
             <a href="#デザート" className="hover:text-zinc-900 transition-colors">デザート</a>
           </nav>
         </div>
