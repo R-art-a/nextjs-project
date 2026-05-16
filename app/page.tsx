@@ -1,6 +1,5 @@
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
 
 export default function Home() {
   return (
@@ -19,26 +18,37 @@ export default function Home() {
       {/* 2. メインコンテンツ */}
       <main className="mx-auto w-full max-w-md flex-1 px-4 py-12 space-y-6">
         
-        {/* メインのカード（注文フォーム） */}
+        {/* メインのカード（メニュー選択） */}
         <Card className="w-full">
           <CardHeader>
-            <CardTitle>メニューの追加</CardTitle>
-            <CardDescription>注文したい商品をリストに追加してください。</CardDescription>
+            <CardTitle>メニュー選択</CardTitle>
+            <CardDescription>ご注文されるアイスコーヒーをお選びください。</CardDescription>
           </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="space-y-2">
-              <label className="text-sm font-medium">商品名</label>
-              <Input placeholder="例：アイスコーヒー" className="h-11" /> {/* 入力欄もタップしやすい高さ */}
-            </div>
+          <CardContent className="space-y-6">
             
-            {/* CTA 1: 追加するボタン（高さ44px相当のしっかりサイズ） */}
+            {/* メニュー選択用の一覧（タップしやすい高さ48pxのボタン型UI） */}
+            <div className="space-y-3">
+              <label className="text-sm font-medium text-zinc-500">メニュー</label>
+              
+              <button className="flex w-full items-center justify-between rounded-lg border-2 border-zinc-900 bg-white p-4 text-left shadow-sm transition-all h-14">
+                <span className="font-semibold text-base">☕ アイスコーヒー（レギュラー）</span>
+                <span className="text-zinc-600 font-medium">¥450</span>
+              </button>
+
+              <button className="flex w-full items-center justify-between rounded-lg border border-zinc-200 bg-white p-4 text-left shadow-sm hover:border-zinc-300 transition-all h-14">
+                <span className="font-medium text-base text-zinc-700">☕ アイスコーヒー（ラージ）</span>
+                <span className="text-zinc-500">¥550</span>
+              </button>
+            </div>
+
+            {/* CTA 1: 追加するボタン（高さ44px） */}
             <Button className="w-full h-11 text-base font-semibold">
-              リストに追加する
+              注文リストに追加する
             </Button>
           </CardContent>
         </Card>
 
-        {/* CTA 2: 注文リストを見る（セカンダリボタン、こちらも高さ44px） */}
+        {/* CTA 2: 注文リストを見る（高さ44px） */}
         <div className="text-center">
           <Button variant="outline" className="w-full h-11 text-base font-medium bg-white">
             現在の注文リストを見る
