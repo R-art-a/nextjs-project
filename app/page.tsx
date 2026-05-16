@@ -3,22 +3,22 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 
 const menuItems = [
   // 1. 主菜ジャンル
-  { id: 1, name: "特製ハンバーグ定食", price: 1200, category: "フード", img: "https://images.unsplash.com/photo-1544025162-d76694265947?w=300&auto=format&fit=crop&q=60" },
-  { id: 2, name: "唐揚げ丼", price: 950, category: "フード", img: "/karaage.png" },
-  { id: 3, name: "濃厚こだわりカレー", price: 880, category: "フード", img: "https://images.unsplash.com/photo-1631515243349-e0cb75fb8d3a?w=300&auto=format&fit=crop&q=60" },
+  { id: 1, name: "生姜焼き定食", price: 1200, category: "定食", img: "/shougayaki.png" },
+  { id: 2, name: "唐揚げ定食", price: 950, category: "定食", img: "/karaageteishoku.png" },
+  { id: 3, name: "野菜炒め定食", price: 880, category: "定食", img: "/yasaiitame.png" },
   
   // 2. 飲み物ジャンル
-  { id: 4, name: "アイスコーヒー", price: 450, category: "ドリンク", img: "https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=300&auto=format&fit=crop&q=60" },
-  { id: 5, name: "アイスカフェラテ", price: 550, category: "ドリンク", img: "https://images.unsplash.com/photo-1517701604599-bb29b565090c?w=300&auto=format&fit=crop&q=60" },
-  { id: 6, name: "レモンスカッシュ", price: 480, category: "ドリンク", img: "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=300&auto=format&fit=crop&q=60" },
+  { id: 4, name: "ラーメン", price: 450, category: "麺類", img: "/ramen.png" },
+  { id: 5, name: "うどん", price: 550, category: "麺類", img: "/udon.png" },
+  { id: 6, name: "そば", price: 480, category: "麺類", img: "/soba.png" },
   
   // 3. デザートジャンル
-  { id: 7, name: "自家製カスタードプリン", price: 500, category: "デザート", img: "https://images.unsplash.com/photo-1528975604071-b4dc52a2d18c?w=300&auto=format&fit=crop&q=60" },
-  { id: 8, name: "濃厚チョコレートケーキ", price: 600, category: "デザート", img: "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=300&auto=format&fit=crop&q=60" },
-  { id: 9, name: "季節のフルーツパフェ", price: 750, category: "デザート", img: "https://images.unsplash.com/photo-1488477181946-6428a0291777?w=300&auto=format&fit=crop&q=60" },
+  { id: 7, name: "からあげ丼", price: 500, category: "丼", img: "/karaage.png" },
+  { id: 8, name: "たれかつ丼", price: 600, category: "丼", img: "/tarekatu.png" },
+  { id: 9, name: "カレー", price: 750, category: "丼", img: "/kare.png" },
 ]
 
-const categories = ["フード", "ドリンク", "デザート"]
+const categories = ["定食", "麺類", "丼"]
 
 export default function Home() {
   return (
