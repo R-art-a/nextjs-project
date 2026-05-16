@@ -31,6 +31,7 @@ export default function Home() {
   const [people, setPeople] = useState<string>("2")
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState<boolean>(true)
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false) // 二重送信対策用
 
   // 各メニューごとの「選択中の個数」を管理する状態
   const [selectedQuantities, setSelectedQuantities] = useState<{ [key: number]: number }>({})
@@ -119,6 +120,41 @@ export default function Home() {
     }
   }
 
+  // 🚀 注文をサーバーへ送信して確定する関数
+  const submitOrder = async () => {
+    if (cart.length === 0 || isSubmitting) return
+
+    setIsSubmitting(true) // ボタンを無効化（二重送信対策）
+    setError(null)
+
+    try {
+      const response = await fetch("/api/orders", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          items: cart,
+          totalPrice: totalPrice,
+          peopleCount: peopleCount,
+        }),
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        throw new Error(data.error || "注文に失敗しました。")
+      }
+
+      // 🎉 成功時のフィードバック
+      alert(`注文が確定しました！ (注文ID: ${data.orderId})\nご利用ありがとうございました！`)
+      setCart([]) // カートを空にする
+    } catch (err: any) {
+      console.error(err)
+      setError(err.message || "注文処理中にエラーが発生しました。")
+    } finally {
+      setIsSubmitting(false) // ボタンの無効化を解除
+    }
+  }
+
   const totalPrice = cart.reduce((sum, item) => sum + item.price * item.quantity, 0)
   const peopleCount = parseInt(people, 10)
   const perPersonPrice = peopleCount > 0 ? Math.ceil(totalPrice / peopleCount) : 0
@@ -140,7 +176,6 @@ export default function Home() {
                 {cat}
               </button>
             ))}
-            {/* 🛠️ カートテキストをクリックしたときも、現在の注文リストへ飛ぶようにボタン化 */}
             <button 
               onClick={() => scrollToSection("cart-section")} 
               className="hover:text-zinc-900 transition-colors font-bold text-zinc-900"
@@ -199,3 +234,132 @@ export default function Home() {
                                     value={currentQty}
                                     onChange={(e) => handleQuantityChange(item.id, parseInt(e.target.value, 10))}
                                     className="h-8 bg-zinc-50 border border-zinc-200 rounded-lg px-1.5 text-xs font-bold text-zinc-800 focus:outline-none focus:border-zinc-400 shrink-0"
+                                  >
+                                    {[...Array(10)].map((_, i) => (
+                                      <option key={i + 1} value={i + 1}>{i + 1}</option>
+                                    ))}
+                                  </select>
+
+                                  <Button 
+                                    size="sm" 
+                                    className="flex-1 h-8 text-xs font-bold rounded-lg bg-zinc-900 hover:bg-zinc-800 text-white"
+                                    onClick={() => addToCart(item)}
+                                  >
+                                    追加
+                                  </Button>
+                                </>
+                              ) : (
+                                <Button 
+                                  size="sm" 
+                                  variant="secondary"
+                                  className="w-full h-8 text-xs font-bold rounded-lg"
+                                  disabled
+                                >
+                                  品切れ
+                                </Button>
+                              )}
+                            </div>
+                          </div>
+                        </Card>
+                      )
+                    })}
+                </div>
+              </div>
+            ))
+          )}
+
+          {/* 注文リストUI */}
+          <Card id="cart-section" className="border border-zinc-200 shadow-sm rounded-xl bg-white scroll-mt-4">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-base">現在の注文リスト</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4 text-sm">
+              {cart.length === 0 ? (
+                <p className="text-zinc-400 text-center py-4">注文リストは空です</p>
+              ) : (
+                <div className="divide-y divide-zinc-100">
+                  {cart.map((item) => (
+                    <div key={item.id} className="flex justify-between items-center py-2.5">
+                      <div className="flex items-center gap-2">
+                        <button 
+                          onClick={() => removeFromCart(item.id)}
+                          className="w-5 h-5 flex items-center justify-center bg-zinc-100 text-zinc-600 rounded hover:bg-zinc-200 transition-colors text-xs font-bold"
+                        >
+                          -
+                        </button>
+                        <span className="text-zinc-700">
+                          {item.name} <span className="text-xs font-bold text-zinc-500">×{item.quantity}</span>
+                        </span>
+                      </div>
+                      
+                      <div className="flex items-center gap-3">
+                        <span className="font-medium text-zinc-900">¥{(item.price * item.quantity).toLocaleString()}</span>
+                        <button 
+                          onClick={() => clearItemFromCart(item.id)}
+                          className="px-1.5 py-0.5 text-[11px] bg-red-50 text-red-500 rounded hover:bg-red-100 transition-colors font-medium"
+                        >
+                          消す
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+              <div className="border-t pt-3 space-y-3">
+                <div className="flex justify-between items-center text-base font-bold">
+                  <span>合計金額</span>
+                  <span className="text-lg text-zinc-900">¥{totalPrice.toLocaleString()}</span>
+                </div>
+                <div className="bg-zinc-50 rounded-lg p-3 space-y-2 border border-zinc-100">
+                  <div className="flex items-center justify-between gap-4">
+                    <span className="text-xs text-zinc-500 font-medium shrink-0">割り勘人数</span>
+                    <Input 
+                      type="number" 
+                      min="1" 
+                      value={people} 
+                      onChange={(e) => setPeople(e.target.value)}
+                      className="w-20 h-8 text-right text-sm bg-white border-zinc-200"
+                    />
+                  </div>
+                  <div className="flex justify-between items-center text-xs font-semibold border-t border-dashed border-zinc-200 pt-2">
+                    <span className="text-zinc-500">1人あたり（端数切上げ）</span>
+                    <span className="text-sm font-bold text-zinc-900">¥{perPersonPrice.toLocaleString()}</span>
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </main>
+
+      {/* 下部固定フッターエリア */}
+      <div className="border-t bg-white p-4 shadow-[0_-4px_12px_rgba(0,0,0,0.05)] shrink-0 flex justify-between items-center gap-2">
+        <div className="flex items-center gap-4">
+          <div>
+            <div className="text-[10px] text-zinc-400 font-bold uppercase tracking-wider">合計</div>
+            <div className="text-lg font-black text-zinc-900">¥{totalPrice.toLocaleString()}</div>
+          </div>
+          <Button 
+            onClick={() => scrollToSection("cart-section")}
+            variant="outline"
+            className="h-11 text-xs px-3 border-zinc-300 font-semibold rounded-xl flex items-center gap-1 hover:bg-zinc-50"
+          >
+            🛒 カートを見る ({totalCartCount})
+          </Button>
+        </div>
+        
+        <Button 
+          disabled={cart.length === 0 || isSubmitting} 
+          onClick={submitOrder}
+          className="w-40 sm:w-48 h-11 text-sm font-bold bg-zinc-900 text-white rounded-xl shadow-sm disabled:opacity-50"
+        >
+          {isSubmitting ? "送信中..." : "注文を確定する"}
+        </Button>
+      </div>
+
+      <footer className="border-t bg-zinc-50 px-6 py-3 text-center text-xs text-zinc-400 shrink-0">
+        <div className="mx-auto max-w-5xl">© 2026 OSAKI亭. All rights reserved.</div>
+      </footer>
+    </div>
+  )
+}
